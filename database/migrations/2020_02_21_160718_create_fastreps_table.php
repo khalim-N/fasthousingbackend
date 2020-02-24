@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFastrepTable extends Migration
+class CreateFastrepsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFastrepTable extends Migration
      */
     public function up()
     {
-        Schema::create('fastrep', function (Blueprint $table) {
+        Schema::create('fastreps', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
@@ -31,6 +31,6 @@ class CreateFastrepTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fastrep');
+        Schema::dropIfExists('fastreps');
     }
 }
