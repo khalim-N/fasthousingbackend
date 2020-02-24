@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -26,29 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo;
-    public function redirectTo()
-    {
-        switch(Auth::user()->role){
-            case 1:
-            $this->redirectTo = '/admin';
-            return $this->redirectTo;
-                break;
-            case 2:
-                    $this->redirectTo = '/Fastrep';
-                return $this->redirectTo;
-                break;
-            case 3:
-                $this->redirectTo = '/user';
-                return $this->redirectTo;
-                break;
-            default:
-                $this->redirectTo = '/login';
-                return $this->redirectTo;
-        }
-         
-        // return $next($request);
-    } 
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -57,6 +36,46 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
+        $this->middleware('guest:fastrep')->except('logout');
+    }
+
+    public function showAdminLoginForm()
+    {
+        return view('auth.login', ['url' => 'admin']);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+            return redirect()->intended('/admin');
+        }
+        return back()->withInput($request->only('email', 'remember'));
+    }
+
+    public function showFastrepLoginForm()
+    {
+        return view('auth.login', ['url' => 'fastrep']);
+    }
+
+    public function FastrepLogin(Request $request)
+    {
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        if (Auth::guard('fastrep')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+            return redirect()->intended('/fastrep');
+        }
+        return back()->withInput($request->only('email', 'remember'));
     }
 }

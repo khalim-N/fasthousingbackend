@@ -14,12 +14,11 @@ class CreateFastrepTable extends Migration
     public function up()
     {
         Schema::create('fastrep', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('status_id')->nullable();
+            $table->boolean('is_editor')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

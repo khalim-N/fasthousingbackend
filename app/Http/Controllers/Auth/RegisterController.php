@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Admin;
+use App\Fastrep;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -29,29 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo;
-    public function redirectTo()
-    {
-        switch(Auth::user()->role){
-            case 1:
-            $this->redirectTo = '/admin';
-            return $this->redirectTo;
-                break;
-            case 2:
-                    $this->redirectTo = '/Fastrep';
-                return $this->redirectTo;
-                break;
-            case 3:
-                $this->redirectTo = '/user';
-                return $this->redirectTo;
-                break;
-            default:
-                $this->redirectTo = '/login';
-                return $this->redirectTo;
-        }
-         
-        // return $next($request);
-    } 
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -61,6 +42,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:admin');
+        $this->middleware('guest:fastrep');
     }
 
     /**
@@ -74,7 +57,6 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' =>['required', 'string', 'phone'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -92,5 +74,38 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function showAdminRegisterForm()
+    {
+        return view('auth.register', ['url' => 'admin']);
+    }
+
+    public function showFastrepRegisterForm()
+    {
+        return view('auth.register', ['url' => 'fastrep']);
+    }
+
+
+    protected function createAdmin(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/admin');
+    }
+
+    protected function createFastrep(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        Fastrep::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/fastrep');
     }
 }

@@ -78,23 +78,50 @@
                     @endauth
                 </div>
             @endif
+            
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+            <div id="app">
+                <template>
+                    <v-container>
+                      <v-row justify="space-around">
+                        <div>
+                          <v-btn
+                            class="mx-1"
+                            color="primary"
+                            @click="messages++"
+                          >
+                            Send Message
+                          </v-btn>
+                  
+                          <v-btn
+                            class="mx-1"
+                            color="error"
+                            @click="messages = 0"
+                          >
+                            Clear Notifications
+                          </v-btn>
+                        </div>
+                  
+                        <v-badge
+                          :content="messages"
+                          :value="messages"
+                          color="green"
+                          overlap
+                        >
+                          <v-icon large>mdi-email</v-icon>
+                        </v-badge>
+                      </v-row>
+                    </v-container>
+                  </template>
+              </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+            
         </div>
     </body>
+    <script>
+        new Vue({
+          el: '#app',
+          vuetify: new Vuetify(),
+        })
+      </script>
 </html>

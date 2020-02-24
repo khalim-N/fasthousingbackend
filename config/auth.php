@@ -35,19 +35,27 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'guards' => [
+            'web' => [
+                'driver' => 'session',
+                'provider' => 'users',
+            ],
+    
+            'api' => [
+                'driver' => 'token',
+                'provider' => 'users',
+            ],
+    
+            'admin' => [
+                'driver' => 'session',
+                'provider' => 'admins',
+            ],
+            
+            'fastrep' => [
+                'driver' => 'session',
+                'provider' => 'fastrep',
+            ],
         ],
-
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
-        ],
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -71,10 +79,15 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
+        ],
+
+        'fastrep' => [
+            'driver' => 'eloquent',
+            'model' => App\Fastrep::class,
+        ],
     ],
 
     /*
