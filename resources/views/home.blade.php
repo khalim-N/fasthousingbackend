@@ -14,4 +14,5 @@
         </div>
     </div>
 </div>
+<example-component></example-component>
 @endsection

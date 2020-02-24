@@ -1,17 +1,22 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Example Component</div>
+  <v-bottom-navigation
+    v-model="bottomNav"
+  >
+    <v-btn value="recent">
+      <span>Recent</span>
+      <v-icon>mdi-history</v-icon>
+    </v-btn>
 
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <v-btn value="favorites">
+      <span>Favorites</span>
+      <v-icon>mdi-heart</v-icon>
+    </v-btn>
+
+    <v-btn value="nearby">
+      <span>Nearby</span>
+      <v-icon>mdi-map-marker</v-icon>
+    </v-btn>
+  </v-bottom-navigation>
 </template>
 
 <script>
